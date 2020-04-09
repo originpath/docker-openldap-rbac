@@ -1,0 +1,15 @@
+version: '3.2'
+
+services:
+  ldap:
+    container_name: ldap-test
+    build: ../
+    command: "--copy-service --loglevel debug"
+    environment:
+      LDAP_ORGANISATION: Originpath.com
+      LDAP_DOMAIN: example.com
+      LDAP_ADMIN_PASSWORD: originpath
+      LDAP_CONFIG_PASSWORD: originpath
+      LDAP_TLS_VERIFY_CLIENT: try
+
+

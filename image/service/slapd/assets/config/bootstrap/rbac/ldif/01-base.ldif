@@ -1,0 +1,51 @@
+# Entry 2: ou=Groups,{{ LDAP_BASE_DN }}
+dn: ou=Groups,{{ LDAP_BASE_DN }}
+objectclass: organizationalUnit
+objectclass: top
+ou: Groups
+
+# Entry 3: ou=Impersonations,{{ LDAP_BASE_DN }}
+dn: ou=Impersonations,{{ LDAP_BASE_DN }}
+objectclass: organizationalUnit
+objectclass: top
+ou: Impersonations
+
+# Entry 4: ou=People,{{ LDAP_BASE_DN }}
+dn: ou=People,{{ LDAP_BASE_DN }}
+objectclass: organizationalUnit
+objectclass: top
+ou: People
+
+# Entry 5: ou=Policy,{{ LDAP_BASE_DN }}
+dn: ou=Policy,{{ LDAP_BASE_DN }}
+objectclass: organizationalUnit
+objectclass: top
+ou: Policy
+
+# Entry 6: cn=Administrators,ou=Policy,{{ LDAP_BASE_DN }}
+dn: cn=Administrators,ou=Policy,{{ LDAP_BASE_DN }}
+cn: Administrators
+gidnumber: 10001
+objectclass: posixGroup
+objectclass: top
+objectclass: x-role
+x-scope: sub
+x-write: TRUE
+x-targetobject: {{ LDAP_BASE_DN }}
+
+# Entry 7: cn=Viewers,ou=Policy,{{ LDAP_BASE_DN }}
+dn: cn=Viewers,ou=Policy,{{ LDAP_BASE_DN }}
+cn: Viewers
+gidnumber: 10002
+objectclass: posixGroup
+objectclass: top
+objectclass: x-role
+x-scope: sub
+x-read: TRUE
+x-targetobject: {{ LDAP_BASE_DN }}
+
+# Entry 8: ou=Roles,ou=Policy,{{ LDAP_BASE_DN }}
+dn: ou=Roles,ou=Policy,{{ LDAP_BASE_DN }}
+objectclass: organizationalUnit
+objectclass: top
+ou: Roles

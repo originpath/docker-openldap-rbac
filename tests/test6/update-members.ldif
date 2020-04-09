@@ -1,0 +1,6 @@
+dn: cn=project-a-a,cn=project-a,ou=Groups,dc=example,dc=com
+changetype: modify
+replace: memberuid
+memberuid: abigail.anderson
+memberuid: abigail.adams
+

@@ -1,0 +1,16 @@
+dn: cn=view-project-a-a,ou=Roles,ou=Policy,dc=example,dc=com
+cn: view-project-a-a
+gidnumber: 1001
+memberuid: test.user
+objectclass: posixGroup
+objectclass: top
+objectclass: x-role
+#x-follow: TRUE
+#x-include-role: dc=example,dc=com
+#x-is-global: FALSE
+#x-none: FALSE
+x-parents: TRUE
+x-read: TRUE
+#x-scope: base | sub | one
+#x-write: TRUE
+x-targetobject: cn=project-a-a,cn=project-a,ou=Groups,dc=example,dc=com

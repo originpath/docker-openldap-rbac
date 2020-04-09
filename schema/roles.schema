@@ -1,0 +1,75 @@
+attributetype ( 1.3.6.1.4.1.55081.2.3.1 
+		NAME 'x-targetObject'
+		DESC 'Object to apply permissions'
+		SUP distinguishedName
+ )
+
+attributetype ( 1.3.6.1.4.1.55081.2.3.2 
+		NAME 'x-scope'
+		DESC 'Scope of permissions'
+		SUP name
+ )
+
+attributetype ( 1.3.6.1.4.1.55081.2.3.3
+		NAME 'x-none'
+		DESC 'Rule grants NONE permissions'
+		EQUALITY booleanMatch
+		SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+		SINGLE-VALUE 
+ )
+
+attributetype ( 1.3.6.1.4.1.55081.2.3.4
+		NAME 'x-read'
+		DESC 'Rule grants READ permissions'
+		EQUALITY booleanMatch
+		SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+		SINGLE-VALUE
+ )
+
+attributetype ( 1.3.6.1.4.1.55081.2.3.5
+		NAME 'x-write'
+		DESC 'Rule grants WRITE permissions'
+		EQUALITY booleanMatch
+		SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+		SINGLE-VALUE
+ )
+
+attributetype ( 1.3.6.1.4.1.55081.2.3.6
+		NAME 'x-follow'
+		DESC 'Allow to follow members of groups'
+		EQUALITY booleanMatch
+		SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+		SINGLE-VALUE
+ )
+
+attributetype ( 1.3.6.1.4.1.55081.2.3.7
+		NAME 'x-parents'
+		DESC 'Allow to read full parent structure'
+		EQUALITY booleanMatch
+		SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+		SINGLE-VALUE
+ )
+
+attributetype ( 1.3.6.1.4.1.55081.2.3.8
+		NAME 'x-include-role'
+		DESC 'Allow to compose x-role'
+		SUP distinguishedName
+ )
+
+attributetype ( 1.3.6.1.4.1.55081.2.3.9
+		NAME 'x-is-global'
+		DESC 'Apply this rule to every single user wheather or not belongs to a group'
+		EQUALITY booleanMatch
+		SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+		SINGLE-VALUE
+ )
+
+objectclass ( 1.3.6.1.4.1.55081.2.4.1 
+		NAME 'x-role'
+		DESC 'Role for restrict tree permissions'
+		SUP ( top )
+		AUXILIARY
+		MAY ( x-targetObject $ x-scope $ x-read $ x-write $ x-none $ x-follow $ x-parents $ x-include-role $ x-is-global)
+ )
+
+#/container/service/slapd/assets/schema-to-ldif.sh /container/service/slapd/assets/config/bootstrap/schema/custom.schema

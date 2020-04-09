@@ -1,0 +1,20 @@
+version: '3.2'
+
+services:
+  ldap:
+    ports:
+      - 636:636
+
+  ldap-admin:
+    container_name: ldap-admin-test
+    image: osixia/phpldapadmin:latest
+    ports:
+      - 6443:443
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: ldap
+      PHPLDAPADMIN_HTTPS: "true"
+      PHPLDAPADMIN_LDAP_CLIENT_TLS: "false"
+
+  sut:
+    environment:
+      DEBUG: "true"

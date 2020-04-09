@@ -1,0 +1,48 @@
+# Entry 1: cn=employees,ou=Groups,dc=example,dc=com
+dn: cn=employees,ou=Groups,dc=example,dc=com
+cn: employees
+gidnumber: 500
+objectclass: posixGroup
+objectclass: top
+
+# Entry 1: cn=project-a,ou=Groups,dc=example,dc=com
+dn: cn=project-a,ou=Groups,dc=example,dc=com
+cn: project-a
+gidnumber: 501
+objectclass: posixGroup
+objectclass: top
+
+# Entry 2: cn=project-a-a,cn=project-a,ou=Groups,dc=example,dc=com
+dn: cn=project-a-a,cn=project-a,ou=Groups,dc=example,dc=com
+cn: project-a-a
+gidnumber: 502
+objectclass: posixGroup
+objectclass: top
+
+# Entry 3: cn=project-a-b,cn=project-a,ou=Groups,dc=example,dc=com
+dn: cn=project-a-b,cn=project-a,ou=Groups,dc=example,dc=com
+cn: project-a-b
+gidnumber: 503
+objectclass: posixGroup
+objectclass: top
+
+# Entry 4: cn=project-b,ou=Groups,dc=example,dc=com
+dn: cn=project-b,ou=Groups,dc=example,dc=com
+cn: project-b
+gidnumber: 504
+objectclass: posixGroup
+objectclass: top
+
+# Entry 5: cn=project-b-a,cn=project-b,ou=Groups,dc=example,dc=com
+dn: cn=project-b-a,cn=project-b,ou=Groups,dc=example,dc=com
+cn: project-b-a
+gidnumber: 504
+objectclass: posixGroup
+objectclass: top
+
+# Entry 6: cn=project-b-b,cn=project-b,ou=Groups,dc=example,dc=com
+dn: cn=project-b-b,cn=project-b,ou=Groups,dc=example,dc=com
+cn: project-b-b
+gidnumber: 505
+objectclass: posixGroup
+objectclass: top

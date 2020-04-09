@@ -1,0 +1,24 @@
+dn: cn=project-a-a,cn=project-a,ou=Groups,dc=example,dc=com
+changetype:  modify
+replace: memberuid
+memberuid: abigail.adams
+
+dn: cn=project-a-b,cn=project-a,ou=Groups,dc=example,dc=com
+changetype:  modify
+replace: memberuid
+memberuid: abigail.allen
+
+dn: cn=project-b,ou=Groups,dc=example,dc=com
+changetype:  modify
+replace: memberuid
+memberuid: abigail.baker
+
+dn: cn=project-b-a,cn=project-b,ou=Groups,dc=example,dc=com
+changetype:  modify
+replace: memberuid
+memberuid: abigail.anderson
+
+dn: cn=project-b-b,cn=project-b,ou=Groups,dc=example,dc=com
+changetype:  modify
+replace: memberuid
+memberuid: abigail.bailey

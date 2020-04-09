@@ -1,0 +1,71 @@
+# Add indexes
+dn: olcDatabase={1}{{ LDAP_BACKEND }},cn=config
+changetype:  modify
+replace: olcDbIndex
+olcDbIndex: uid eq
+olcDbIndex: mail eq
+olcDbIndex: memberOf eq
+olcDbIndex: entryCSN eq
+olcDbIndex: entryUUID eq
+olcDbIndex: objectClass eq
+olcDbIndex: memberUid eq
+olcDbIndex: x-read eq
+olcDbIndex: x-write eq
+olcDbIndex: x-none eq
+olcDbIndex: x-follow eq
+olcDbIndex: x-scope eq
+olcDbIndex: x-parents eq
+-
+delete: olcAccess
+-
+add: olcAccess
+# Limit access to the admin acount only to itself and Administrators
+olcAccess: to dn="cn=admin,{{ LDAP_BASE_DN }}" by dn="cn=admin,{{ LDAP_BASE_DN }}" write by set="[cn=Administrators,ou=Policy,{{ LDAP_BASE_DN }}]/memberUid & user/uid" write by * none
+olcAccess: to attrs=userPassword,shadowLastChange by self write by dn="cn=admin,{{ LDAP_BASE_DN }}" write by anonymous auth by * none
+#########################
+#Allow users to read base
+olcAccess: to dn.base="{{ LDAP_BASE_DN }}" by users read
+#########################
+#olcAccess: to * by set="{{ LDAP_ROLE_01_BASE }}" read
+olcAccess: to * by set="{{ LDAP_ROLE_11_NONE }}" none by set="{{ LDAP_ROLE_10_WRITE }}" write by set="{{ LDAP_ROLE_09_READ }}" read
+#########################
+# allow to read its own entry and attributes, admin to write anything and Viewers to read
+olcAccess: to * by self read by dn="cn=admin,{{ LDAP_BASE_DN }}" write by set="[cn=Administrators,ou=Policy,{{ LDAP_BASE_DN }}]/memberUid & user/uid" write by set="[cn=Viewers,ou=Policy,{{ LDAP_BASE_DN }}]/memberUid & user/uid" read by * none
+
+
+# ( ( [ldap:///] + this + [??sub?uid=] + ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-follow=TRUE)(x-parents=TRUE)(memberUid=] + user/uid + [))] )/entryDN/x-targetObject/memberUid ) )/entryDN ) |
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-parents=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject/-* & this ) |
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-follow=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject/memberUid & this/uid ) |
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this ) |
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-scope=one)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this/-1 ) |
+# ( [ldap:///] + ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-follow=TRUE)(x-scope=one)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this/-1 ) + [??one?])/entryDN
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-scope=sub)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this/-* )
+
+
+( ( [ldap:///] + this + [??sub?uid=] + ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-follow=TRUE)(x-parents=TRUE)(memberUid=] + user/uid + [))] )/entryDN/x-targetObject/memberUid ) )/entryDN ) | ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-parents=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject/-* & this ) | ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-follow=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject/memberUid & this/uid ) | ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this ) | ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-scope=one)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this/-1 ) | ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-scope=sub)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this/-* )
+
+# ( ( [ldap:///] + this + [??sub?uid=] + ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-follow=TRUE)(x-parents=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject/memberUid ) )/entryDN ) # FOLLOWED_PARENTS
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-parents=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject/-* & this ) # PARENTS
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-follow=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject/memberUid & this/uid ) # FOLLOW UID
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this ) # BASE
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-scope=one)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this/-1 ) # ONE
+# ( ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-follow=TRUE)(x-scope=one)(memberUid=] + user/uid + [))])/entryDN/x-targetObject ) & ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?memberUid=] + this/uid )/entryDN/-1 ) ) # FOLLOWED_ONE
+# ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-scope=sub)(memberUid=] + user/uid + [))])/entryDN/x-targetObject & this/-* ) # SUB
+# ( ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?(&(objectclass=posixGroup)(objectclass=x-role)(x-read=TRUE)(x-follow=TRUE)(x-scope=sub)(memberUid=] + user/uid + [))])/entryDN/x-targetObject ) & ( ( [ldap:///{{ LDAP_BASE_DN }}??sub?memberUid=] + this/uid )/entryDN/-* ) ) # FOLLOWED_SUB
+
+# LDAP_ROLE_01_BASE
+# {{ LDAP_ROLE_01_BASE }}
+# LDAP_ROLE_02_FOLLOWED_PARENTS
+# {{ LDAP_ROLE_02_FOLLOWED_PARENTS }}
+# LDAP_ROLE_03_PARENTS
+# {{ LDAP_ROLE_03_PARENTS }}
+# LDAP_ROLE_04_FOLLOW
+# {{ LDAP_ROLE_04_FOLLOW }}
+# LDAP_ROLE_05_ONE
+# {{ LDAP_ROLE_05_ONE }}
+# LDAP_ROLE_06_FOLLOWED_ONE
+# {{ LDAP_ROLE_06_FOLLOWED_ONE }}
+# LDAP_ROLE_07_SUB
+# {{ LDAP_ROLE_07_SUB }}
+# LDAP_ROLE_08_FOLLOWED_SUB
+# {{ LDAP_ROLE_08_FOLLOWED_SUB }}

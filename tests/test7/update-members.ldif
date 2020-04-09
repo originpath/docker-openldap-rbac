@@ -1,0 +1,5 @@
+dn: cn=Abigail Adams,ou=People,dc=example,dc=com
+changetype: modify
+replace: sn
+sn: Adam-Smith
+

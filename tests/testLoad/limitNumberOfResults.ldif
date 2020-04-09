@@ -1,0 +1,6 @@
+dn: olcDatabase={-1}frontend,cn=config
+changetype:  modify
+replace: olcSizeLimit
+olcSizeLimit: 10000
+
+#ldapsearch -H ldapi:// -Y EXTERNAL -s sub -b "cn=config" "olcSizeLimit=*"
