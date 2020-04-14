@@ -9,7 +9,6 @@ services:
       - ./tests/testLoad/limitNumberOfResults.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/03-limitNumberOfResults.ldif
 
   sut:
-    container_name: ldap-test-runner
     image: ubuntu:latest
     volumes:
       - ./tests/base/groups.ldif:/groups.ldif:ro

@@ -7,7 +7,6 @@ services:
       service: ldap
 
   sut:
-    container_name: ldap-test-runner
     image: ubuntu:latest
     volumes:
       - ./tests/base/groups.ldif:/groups.ldif:ro

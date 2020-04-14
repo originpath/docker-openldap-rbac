@@ -2,7 +2,6 @@ version: '2.4'
 
 services:
   ldap:
-    container_name: ldap-test
     build: .
     command: "--copy-service --loglevel debug"
     environment:
