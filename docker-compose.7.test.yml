@@ -1,0 +1,25 @@
+version: '2.4'
+
+services:
+  ldap:
+    extends:
+      file: docker-compose.base.yml
+      service: ldap
+
+  sut:
+    container_name: ldap-test-runner
+    image: ubuntu:latest
+    volumes:
+      - ./tests/base/groups.ldif:/groups.ldif:ro
+      - ./tests/startup.sh:/startup.sh
+      - ./tests/installBase.sh:/installBase.sh
+      - ./tests/names.txt:/names.txt:ro
+      - ./tests/surnames.txt:/surnames.txt:ro
+      - ./tests/generateUserLdif.sh:/generateUserLdif.sh:ro
+      - ./tests/test7/test.sh:/test.sh
+      - ./tests/test7/roles.ldif:/roles.ldif
+      - ./tests/test7/users-in-groups.ldif:/users-in-groups.ldif
+      - ./tests/test7/update-members.ldif:/update-members.ldif
+    entrypoint: /startup.sh
+    depends_on: 
+        - ldap
